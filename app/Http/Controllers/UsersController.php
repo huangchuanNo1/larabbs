@@ -10,6 +10,11 @@ use App\Handlers\ImageUploadHandler;
 
 class UsersController extends Controller
 {
+    //除了show方法 其余都要登陆
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['show']]);
+    }
     //个人 页面
     public function show(User $user)
     {
@@ -19,6 +24,7 @@ class UsersController extends Controller
     //修改页面
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
         return view('users.edit', compact('user'));
     }
 
@@ -26,6 +32,7 @@ class UsersController extends Controller
     public function update(UserRequest $request, User $user,ImageUploadHandler $uploader)
     {
 
+        $this->authorize('update', $user);
         $data = $request->all();
 
         if ($request->avatar) {
