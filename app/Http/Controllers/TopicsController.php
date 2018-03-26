@@ -20,7 +20,11 @@ class TopicsController extends Controller
 //
 //		return view('topics.index', compact('topics'));
         $topics = $topic->withOrder($request->order)->paginate(20);
-        return view('topics.index', compact('topics'));
+        $url=$request->order;
+        //  var_dump($url);
+        // 传参变量话题和分类到模板中
+        return view('topics.index', compact('topics', 'url'));
+       // return view('topics.index', compact('topics'));
 	}
 
     public function show(Topic $topic)

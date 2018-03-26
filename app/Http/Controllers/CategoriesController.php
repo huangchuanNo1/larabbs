@@ -26,7 +26,7 @@ class CategoriesController extends Controller
             ->paginate(20);
 
         $url=$request->order;
-        var_dump($url);
+      //  var_dump($url);
         // 传参变量话题和分类到模板中
         return view('topics.index', compact('topics', 'category','url'));
     }
