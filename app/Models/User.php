@@ -5,9 +5,24 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use Auth;
+
 class User extends Authenticatable
 {
-    use Notifiable;
+    //use Notifiable;
+    use Notifiable {
+        notify as protected laravelNotify;
+    }
+    public function notify($instance)
+    {
+        // 如果要通知的人是当前用户，就不必通知了！
+        if ($this->id == Auth::id()) {
+            return;
+        }
+        $this->increment('notification_count');
+        $this->laravelNotify($instance);
+    }
+
 
     /**
      * The attributes that are mass assignable.
@@ -35,5 +50,19 @@ class User extends Authenticatable
     public function isAuthorOf($model)
     {
         return $this->id == $model->user_id;
+    }
+    //一对多   一个用户多条评论
+    public function replies()
+    {
+        return $this->hasMany(Reply::class);
+    }
+
+    //当用户访问通知列表时，将所有通知状态设定为已读，并清空未读消息数。
+
+    public function markAsRead()
+    {
+        $this->notification_count = 0;
+        $this->save();
+        $this->unreadNotifications->markAsRead();
     }
 }

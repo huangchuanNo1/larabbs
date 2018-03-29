@@ -18,7 +18,7 @@ class UsersController extends Controller
     //个人 页面
     public function show(User $user)
     {
-       
+
         return view('users.show', compact('user'));
     }
     //修改页面

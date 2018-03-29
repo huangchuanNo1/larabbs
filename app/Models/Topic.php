@@ -5,6 +5,12 @@ namespace App\Models;
 class Topic extends Model
 {
     protected $fillable = ['title', 'body', 'category_id', 'excerpt', 'slug'];
+//一对多  一个话题多条回复
+    public function replies()
+    {
+        return $this->hasMany(Reply::class);
+    }
+
 //一个话题一个分类
     public function category()
     {

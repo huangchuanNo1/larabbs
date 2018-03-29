@@ -25,6 +25,7 @@ class TopicsController extends Controller
 //		$topics = Topic::with('user',"category")->paginate(15);
 //
 //		return view('topics.index', compact('topics'));
+
         $topics = $topic->withOrder($request->order)->paginate(20);
         $url=$request->order;
         //  var_dump($url);
@@ -35,7 +36,6 @@ class TopicsController extends Controller
 
     public function show(Topic $topic,Request $request)
     {
-
         // URL 矫正
         if ( ! empty($topic->slug) && $topic->slug != $request->slug) {
             return redirect($topic->link(), 301);
