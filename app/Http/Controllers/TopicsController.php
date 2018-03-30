@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Topic;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TopicRequest;
@@ -20,19 +21,29 @@ class TopicsController extends Controller
         $this->middleware('auth', ['except' => ['index', 'show']]);
     }
 
-	public function index(Request $request,Topic $topic)
-	{
-//		$topics = Topic::with('user',"category")->paginate(15);
+//	public function index(Request $request,Topic $topic)
+//	{
+////		$topics = Topic::with('user',"category")->paginate(15);
+////
+////		return view('topics.index', compact('topics'));
 //
-//		return view('topics.index', compact('topics'));
+//        $topics = $topic->withOrder($request->order)->paginate(20);
+//        $url=$request->order;
+//        //  var_dump($url);
+//        // 传参变量话题和分类到模板中
+//        return view('topics.index', compact('topics', 'url'));
+//
+//
+//	}
 
+    public function index(Request $request, Topic $topic, User $user)
+    {
         $topics = $topic->withOrder($request->order)->paginate(20);
+        $active_users = $user->getActiveUsers();
         $url=$request->order;
-        //  var_dump($url);
-        // 传参变量话题和分类到模板中
-        return view('topics.index', compact('topics', 'url'));
-       // return view('topics.index', compact('topics'));
-	}
+      //  dd($active_users);
+        return view('topics.index', compact('topics', 'active_users','url'));
+    }
 
     public function show(Topic $topic,Request $request)
     {
