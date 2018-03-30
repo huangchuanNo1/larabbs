@@ -13,6 +13,8 @@ class User extends Authenticatable
     use HasRoles;
 
     use Traits\ActiveUserHelper;
+    use Traits\LastActivedAtHelper;
+
     //use Notifiable;
     use Notifiable {
         notify as protected laravelNotify;
